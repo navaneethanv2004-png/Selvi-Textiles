@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Admin Dashboard</h1>
+    <p>View MongoDB Form Submissions</p>
+</div>
+
+<section style="padding: 3rem 5%; max-width: 1200px; margin: auto;">
+
+    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Customer Inquiries (MongoDB: inquiries_collection)
+    </h2>
+    {% if inquiries %}
+    <div style="overflow-x:auto;">
+        <table
+            style="width: 100%; border-collapse: collapse; background: white; margin-bottom: 3rem; box-shadow: var(--card-shadow); border-radius: 8px; overflow: hidden;">
+            <thead>
+                <tr style="background: var(--primary-color); color: white;">
+                    <th style="padding: 1rem; text-align: left;">Date</th>
+                    <th style="padding: 1rem; text-align: left;">Name</th>
+                    <th style="padding: 1rem; text-align: left;">Phone</th>
+                    <th style="padding: 1rem; text-align: left;">Product</th>
+                    <th style="padding: 1rem; text-align: left;">Quantity</th>
+                    <th style="padding: 1rem; text-align: left;">Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inq in inquiries %}
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem;">{{ inq.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td style="padding: 1rem; font-weight: bold;">{{ inq.name }}</td>
+                    <td style="padding: 1rem;">{{ inq.phone }}</td>
+                    <td style="padding: 1rem; color: var(--primary-color);">{{ inq.product }}</td>
+                    <td style="padding: 1rem;">{{ inq.quantity }}</td>
+                    <td style="padding: 1rem;">{{ inq.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="margin-bottom: 3rem; color: var(--text-muted);">No inquiries found in MongoDB yet.</p>
+    {% endif %}
+
+    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Contact Messages (MongoDB: contacts_collection)</h2>
+    {% if contacts %}
+    <div style="overflow-x:auto;">
+        <table
+            style="width: 100%; border-collapse: collapse; background: white; margin-bottom: 2rem; box-shadow: var(--card-shadow); border-radius: 8px; overflow: hidden;">
+            <thead>
+                <tr style="background: var(--secondary-color); color: white;">
+                    <th style="padding: 1rem; text-align: left;">Date</th>
+                    <th style="padding: 1rem; text-align: left;">Name</th>
+                    <th style="padding: 1rem; text-align: left;">Email</th>
+                    <th style="padding: 1rem; text-align: left;">Subject</th>
+                    <th style="padding: 1rem; text-align: left;">Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for msg in contacts %}
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 1rem;">{{ msg.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td style="padding: 1rem; font-weight: bold;">{{ msg.name }}</td>
+                    <td style="padding: 1rem;">{{ msg.email }}</td>
+                    <td style="padding: 1rem; color: var(--primary-color);">{{ msg.subject }}</td>
+                    <td style="padding: 1rem;">{{ msg.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="margin-bottom: 2rem; color: var(--text-muted);">No contact messages found in MongoDB yet.</p>
+    {% endif %}
+
+</section>
+{% endblock %}

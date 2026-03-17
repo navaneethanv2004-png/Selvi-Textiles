@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Selvi Textiles - Premium manufacturer of medical textile products including bandages, cotton rolls, swabs, and more.">
+    <meta name="keywords"
+        content="Selvi Textiles, Medical Bandage, Cotton Rolls, Roller Bandage, Gauze Roll, Swabs, Medical Textiles">
+    <title>{{ title }} | Selvi Textiles</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="nav-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Selvi Textiles Logo">
+            <span>Selvi Textiles</span>
+        </a>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="/about" class="{% if request.endpoint == 'about' %}active{% endif %}">About Us</a></li>
+            <li><a href="/products" class="{% if request.endpoint == 'products' %}active{% endif %}">Products</a></li>
+            <li><a href="/contact" class="{% if request.endpoint == 'contact' %}active{% endif %}">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash-msg {{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Block -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918940896918" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        title="Contact us on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Selvi Textiles. All Rights Reserved.</p>
+        <p style="margin-top: 10px; font-size: 0.9em;">
+            <a href="/about">About</a> | <a href="/products">Products</a> | <a href="/contact">Contact</a>
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Hide Flash Message after 5 seconds
+        setTimeout(() => {
+            const flashes = document.querySelectorAll('.flash-msg');
+            flashes.forEach(flash => flash.style.display = 'none');
+        }, 5000);
+    </script>
+</body>
+
+</html>

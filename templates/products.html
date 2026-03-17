@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Our Products</h1>
+    <p>Explore our premium range of medical textiles</p>
+</div>
+
+<section class="products-wrapper">
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="product-img">
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <a href="/inquiry?product={{ product.name | urlencode }}" class="btn btn-primary btn-block">Request
+                    Quote</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Additional Banner -->
+<section style="background-color: var(--light-bg); padding: 4rem 5%; text-align: center;">
+    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Looking for Custom Sizes or Bulk Orders?</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">We can manufacture medical textiles according to your
+        specific hospital required dimensions and packaging.</p>
+    <a href="/contact" class="btn btn-outline">Contact Sales Team</a>
+</section>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Contact Us</h1>
+    <p>We're here to answer any questions about our products or your orders.</p>
+</div>
+
+<section class="contact-wrapper">
+    <!-- Contact Info -->
+    <div class="contact-info">
+        <div class="owner-profile"
+            style="text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.2);">
+            <img src="/static/images/veeraputhiran.jpg" alt="Mr. B. Veeraputhiran" onclick="openLightbox()"
+                style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3); margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.3s ease;">
+            <h4 style="margin: 0; color: #fff; font-size: 1.4rem; font-family: 'Outfit', sans-serif;">Mr. B.
+                Veeraputhiran</h4>
+            <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.9); font-weight: 500;">Owner, Selvi Textiles</p>
+        </div>
+
+        <!-- Lightbox Modal -->
+        <div id="imageLightbox" class="lightbox" onclick="closeLightbox()"
+            style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(5px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+            <span class="close-btn" onclick="closeLightbox()"
+                style="position: absolute; top: 30px; right: 40px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
+            <img class="lightbox-content" id="lightboxImg" src="/static/images/veeraputhiran.jpg"
+                style="margin: auto; display: block; max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;">
+            <div id="caption"
+                style="margin: auto; display: block; width: 80%; max-width: 700px; text-align: center; color: #ccc; padding: 20px 0; font-size: 1.2rem; font-family: 'Outfit', sans-serif;">
+                Mr. B. Veeraputhiran - Owner</div>
+        </div>
+
+        <script>
+            function openLightbox() {
+                var lightbox = document.getElementById("imageLightbox");
+                var img = document.getElementById("lightboxImg");
+                lightbox.style.display = "flex";
+                // Trigger reflow
+                void lightbox.offsetWidth;
+                lightbox.style.opacity = "1";
+                img.style.transform = "scale(1)";
+                document.body.style.overflow = "hidden"; // Prevent scrolling
+            }
+
+            function closeLightbox() {
+                var lightbox = document.getElementById("imageLightbox");
+                var img = document.getElementById("lightboxImg");
+                lightbox.style.opacity = "0";
+                img.style.transform = "scale(0.9)";
+                setTimeout(() => {
+                    lightbox.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }, 300);
+            }
+        </script>
+
+        <h3>Get in Touch</h3>
+        <ul>
+            <li>
+                <i class="fa-solid fa-location-dot"></i>
+                <span><strong>Address:</strong><br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=9.4211044,77.5955723" target="_blank"
+                        style="color: inherit; text-decoration: underline; text-underline-offset: 4px; transition: color 0.3s;">
+                        289/C Selva vinayagar kovil street<br>Sankarapandiya puram,
+                        Chattrapatti post - 626102<br>Rajapalayam, Virudhunagar district<br>Tamil Nadu, India
+                    </a>
+                </span>
+            </li>
+            <li>
+                <i class="fa-solid fa-phone"></i>
+                <span><strong>Phone:</strong><br>+91 8940896918</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-envelope"></i>
+                <span><strong>Email:</strong><br>selvitextiles@gmail.com</span>
+            </li>
+            <li>
+                <i class="fa-brands fa-whatsapp"></i>
+                <span><strong>WhatsApp:</strong><br>+91 8940896918</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form-area">
+        <h3 class="form-title" style="text-align: left; margin-bottom: 1.5rem;">Send a Message</h3>
+        <form action="/contact" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" required placeholder="Your Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" required
+                    placeholder="Your Email Address">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" required
+                    placeholder="General Inquiry">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" class="form-control" required
+                    placeholder="How can we help you?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<!-- Google Map Integration -->
+<div class="map-container" style="position: relative;">
+    <iframe src="https://maps.google.com/maps?q=9.4211044,77.5955723&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen="" loading="lazy"></iframe>
+    <a href="https://www.google.com/maps/search/?api=1&query=9.4211044,77.5955723" target="_blank"
+        style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--primary-color); color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-family: 'Outfit', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px; transition: all 0.3s ease; z-index: 10;">
+        <i class="fa-solid fa-location-dot"></i> Open in Google Maps
+    </a>
+</div>
+{% endblock %}
