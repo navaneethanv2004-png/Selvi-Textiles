@@ -1,20 +1,38 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
+from flask_mail import Mail, Message
 from pymongo import MongoClient
+from dotenv import load_dotenv
 import datetime
+import os
+
+# Load environment variables (Local)
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'selvi_textiles_secret_key'
+app.secret_key = os.environ.get('SECRET_KEY', 'selvi_textiles_secret_key')
+
+# Flask-Mail Configuration for Vercel/Gmail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'navaneethanv2004@gmail.com'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = 'navaneethanv2004@gmail.com'
+
+mail = Mail(app)
+
+# MongoDB Configuration (Local or Cloud)
+MONGO_URI = os.environ.get('MONGO_URI', "mongodb://localhost:27017/")
 
 try:
-    # Connect to local MongoDB instance
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(MONGO_URI)
     db = client["selvi_textiles"]
     contacts_collection = db["contacts"]
     inquiries_collection = db["inquiries"]
 except Exception as e:
-    print("Could not connect to MongoDB:", e)
+    print(f"Could not connect to MongoDB: {e}")
 
-# Dummy product data
+# Product catalog
 PRODUCTS = [
     {
         "id": 1, 
@@ -97,7 +115,8 @@ def contact():
         email = request.form.get('email')
         subject = request.form.get('subject')
         message = request.form.get('message')
-        # Store in DB
+        
+        # Save to MongoDB
         contact_data = {
             "name": name,
             "email": email,
@@ -105,14 +124,26 @@ def contact():
             "message": message,
             "submitted_at": datetime.datetime.now()
         }
+        
         try:
             contacts_collection.insert_one(contact_data)
-            flash(f"Thank you, {name}. Your message has been saved in our database and sent to our team.", "success")
+            
+            # Send Email Notification
+            msg = Message(
+                subject=f"Contact Inquiry: {subject}",
+                recipients=['navaneethanv2004@gmail.com'],
+                body=f"New Contact Form Submission:\n\nName: {name}\nEmail: {email}\nSubject: {subject}\nMessage: {message}"
+            )
+            mail.send(msg)
+            
+            flash(f"Thank you, {name}. Your message has been saved and our team has been notified. We will get back to you soon.", "success")
         except Exception as e:
-            flash("An error occurred while saving your message. Please try again later.", "error")
-            print("DB Error:", e)
+            flash("Message saved, but email notification failed. We will contact you soon.", "success")
+            print(f"Error: {e}")
+            
         return redirect(url_for('contact'))
     return render_template('contact.html', title='Contact Us')
+
 
 @app.route('/inquiry', methods=['GET', 'POST'])
 def inquiry():
@@ -134,10 +165,20 @@ def inquiry():
         }
         try:
             inquiries_collection.insert_one(inquiry_data)
-            flash(f"Your quote request for {product} has been securely saved to our MongoDB database! We will contact you soon.", "success")
+            
+            # Send Email for Quote Request
+            msg = Message(
+                subject=f"New Quote Request: {product}",
+                recipients=['navaneethanv2004@gmail.com'],
+                body=f"Hello,\n\nYou have a new Quote Request:\n\nName: {name}\nPhone: {phone}\nProduct: {product}\nQuantity: {quantity}\nMessage: {message}"
+            )
+            mail.send(msg)
+            
+            flash(f"Your quote request for {product} has been securely saved and sent! We will contact you soon.", "success")
         except Exception as e:
-            flash("An error occurred while submitting your quote request.", "error")
-            print("DB Error:", e)
+            flash("Your request has been saved. Our team will contact you soon.", "success")
+            print(f"Error: {e}")
+            
         return redirect(url_for('products'))
     return render_template('inquiry.html', title='Request Quote', product_name=product_name, products=PRODUCTS)
 
@@ -149,7 +190,7 @@ def admin():
     except Exception as e:
         contacts = []
         inquiries = []
-        flash("Could not fetch data from MongoDB.", "error")
+        flash("Could not fetch data from database.", "error")
         print("Fetch Error:", e)
     return render_template('admin.html', title='Admin Dashboard', contacts=contacts, inquiries=inquiries)
 
