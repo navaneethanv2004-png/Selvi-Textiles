@@ -36,7 +36,7 @@ PRODUCTS = [
     },
     {
         "id": 4, 
-        "name": "Gauze Roll (Ganj Roll)", 
+        "name": "Gamjee Roll", 
         "description": "Premium absorbent gauze roll, highly breathable and suitable for various medical applications.", 
         "image": "/static/images/product_4.jpg"
     },
@@ -57,6 +57,24 @@ PRODUCTS = [
         "name": "Dressing Pad | Mopping Pad", 
         "description": "Premium absorbent sterile dressing and mopping pads for effective wound care, surgical procedures, and optimal medical hygiene.", 
         "image": "/static/images/product_7.jpg"
+    },
+    {
+        "id": 8, 
+        "name": "Surgical Gown", 
+        "description": "Standard sterile surgical gown for professional use in operating rooms, providing a high level of fluid resistance and comfort.", 
+        "image": "/static/images/product_8.jpg"
+    },
+    {
+        "id": 9, 
+        "name": "Surgical Cap", 
+        "description": "Lightweight and breathable medical surgical cap designed for full hair coverage and hygiene in clinical environments.", 
+        "image": "/static/images/product_9.jpg"
+    },
+    {
+        "id": 10, 
+        "name": "Medical Nitrile Gloves", 
+        "description": "Durable and puncture-resistant medical-grade nitrile gloves, providing superior protection and tactile sensitivity for clinical use.", 
+        "image": "/static/images/product_10.jpg"
     }
 ]
 
